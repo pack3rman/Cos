@@ -16,6 +16,9 @@ import pl.kurs.java.repository.PersonRepository;
 @RequiredArgsConstructor
 public class PersonController {
     private final PersonRepository personRepository;
+    /**
+     * test
+     */
 
     public ResponseEntity<Person> add(@ModelAttribute RequestPeerson request){
         Person person = Person.builder().name(request.getName()).lastName(request.getLastName()).pesel(request.getPesel()).build();
