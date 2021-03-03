@@ -3,6 +3,7 @@ package pl.kurs.java.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,12 +16,21 @@ import pl.kurs.java.repository.PersonRepository;
 @RequiredArgsConstructor
 public class PersonController {
     private final PersonRepository personRepository;
+
     /**
      * test
      */
     @GetMapping("/add")
-    public ResponseEntity<Person> add(@ModelAttribute RequestPeerson request){
+    public ResponseEntity<Person> add(@ModelAttribute RequestPeerson request) {
         Person person = Person.builder().name(request.getName()).lastName(request.getLastName()).pesel(request.getPesel()).build();
+        personRepository.saveAndFlush(person);
+
+        return new ResponseEntity<Person>(person, HttpStatus.OK);
+    }
+
+    @GetMapping("/addstat")
+    public ResponseEntity<Person> addStatic(@ModelAttribute RequestPeerson request) {
+        Person person = Person.builder().id(Long.valueOf(12)).name(request.getName()).lastName(request.getLastName()).pesel(request.getPesel()).build();
         personRepository.saveAndFlush(person);
 
         return new ResponseEntity<Person>(person, HttpStatus.OK);
